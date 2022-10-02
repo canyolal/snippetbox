@@ -15,7 +15,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// Importantly, we then return from the handler. If we don't return the handler
 	// would keep executing and also write the "Hello from SnippetBox" message.
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		http.NotFound(w, r) //returns 404 page not found
 		return
 	}
 
@@ -27,6 +27,20 @@ func snippetView(w http.ResponseWriter, r *http.Request) {
 }
 
 func snippetCreate(w http.ResponseWriter, r *http.Request) {
+	// If it's not, use the w.WriteHeader() method to send a 405 status
+	// code and the w.Write() method to write a "Method Not Allowed"
+	// response body. We then return from the function so that the
+	// subsequent code is not executed.
+
+	if r.Method != "POST" {
+		// Use the Header().Set() method to add an 'Allow: POST' header to the
+		// response header map. The first parameter is the header name, and
+		// the second parameter is the header value.
+		w.Header().Set("Allow", "POST")
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	w.Write([]byte("Create a new snippet..."))
 }
 
