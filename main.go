@@ -10,14 +10,36 @@ import (
 // *http.Request parameter is a pointer to a struct which hold information about
 // current request like HTTP method and the URL
 func home(w http.ResponseWriter, r *http.Request) {
+	// Check if the current request URL path exactly matches "/". If it doesn't, use
+	// the http.NotFound() function to send a 404 response to the client.
+	// Importantly, we then return from the handler. If we don't return the handler
+	// would keep executing and also write the "Hello from SnippetBox" message.
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
 	w.Write([]byte("Hello from Snippetbox"))
+}
+
+func snippetView(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Display a specific snippet..."))
+}
+
+func snippetCreate(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Create a new snippet..."))
 }
 
 func main() {
 	// Use the http.NewServeMux() function to initialize a new servemux, then
 	// register the home function as the handler for the "/" URL pattern.
 	mux := http.NewServeMux()
+
+	// Go’s servemux supports two different types of URL patterns: fixed paths and subtree paths.
+	// Fixed paths don’t end with a trailing slash, whereas subtree paths do end with a trailing slash.
 	mux.HandleFunc("/", home)
+	mux.HandleFunc("/snippet/view", snippetView)
+	mux.HandleFunc("/snippet/create", snippetCreate)
 
 	// Use the http.ListenAndServe() function to start a new web server. We pass in
 	// two parameters: the TCP network address to listen on (in this case ":4000")
