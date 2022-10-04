@@ -42,7 +42,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
 		}
 
 		// Call ParseGlob() *on this template set* to add any partials.
-		ts, err = template.ParseGlob("./ui/html/partials/*.html")
+		ts, err = ts.ParseGlob("./ui/html/partials/*.html")
 		if err != nil {
 			return nil, err
 		}
