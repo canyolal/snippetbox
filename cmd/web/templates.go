@@ -1,8 +1,8 @@
 package main
 
 import (
+	"html/template"
 	"path/filepath"
-	"text/template"
 
 	"github.com/canyolal/snippetbox/internal/models"
 )
