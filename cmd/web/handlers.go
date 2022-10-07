@@ -93,5 +93,7 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Display the form to create a new snippet."))
+	data := app.newTemplateData(r)
+
+	app.render(w, http.StatusAccepted, "create.html", data)
 }
