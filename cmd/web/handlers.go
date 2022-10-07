@@ -7,15 +7,12 @@ import (
 	"strconv"
 
 	"github.com/canyolal/snippetbox/internal/models"
+	"github.com/julienschmidt/httprouter"
 )
 
 // Change the signature of the home handler so it is defined as a method against
 // *application.
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		app.notFound(w) //use the notFound() helper
-		return
-	}
 
 	snippets, err := app.snippets.Latest()
 	if err != nil {
@@ -34,7 +31,17 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+
+	// When httprouter is parsing a request, the values of any named parameters
+	// will be stored in the request context. We'll talk about request context
+	// in detail later in the book, but for now it's enough to know that you can
+	// use the ParamsFromContext() function to retrieve a slice containing these
+	// parameter names and values like so:
+	params := httprouter.ParamsFromContext(r.Context())
+
+	// We can then use the ByName() method to get the value of the "id" named
+	// parameter from the slice and validate it as normal.
+	id, err := strconv.Atoi(params.ByName("id"))
 	if err != nil || id < 1 {
 		app.notFound(w) //use the notFound() helper
 		return
@@ -59,7 +66,7 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	app.render(w, http.StatusOK, "view.html", data)
 }
 
-func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.Header().Set("Allow", http.MethodPost)
 		app.clientError(w, http.StatusMethodNotAllowed) //use the clientError() heloer.
@@ -83,4 +90,8 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	// Redirect the user to the relevant page for the snippet.
 	http.Redirect(w, r, fmt.Sprintf("/snippet/view?id=%d", id), http.StatusSeeOther)
 
+}
+
+func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Display the form to create a new snippet."))
 }
