@@ -86,6 +86,11 @@ func main() {
 	sessionManager := scs.New()
 	sessionManager.Store = mysqlstore.New(db)
 	sessionManager.Lifetime = 12 * time.Hour
+	// Make sure that the Secure attribute is set on our session cookies.
+	// Setting this means that the cookie will only be sent by a user's web
+	// browser when a HTTPS connection is being used (and won't be sent over an
+	// unsecure HTTP connection).
+	sessionManager.Cookie.Secure = true
 
 	// Initialize a new instance of our application struct, containing the
 	// dependencies.
@@ -114,7 +119,7 @@ func main() {
 	// log.Printf() function to interpolate the address with the log message.
 	infoLog.Printf("Server is running on %s", *addr)
 	// Call the ListenAndServe() method on our new http.Server struct.
-	err = srv.ListenAndServe()
+	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
 	errorLog.Fatal(err)
 }
 
