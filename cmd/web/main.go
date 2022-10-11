@@ -120,6 +120,10 @@ func main() {
 		ErrorLog:  errorLog,
 		Handler:   app.routes(), //Call the app.routes() to get our servemux routes.
 		TLSConfig: tlsConfig,
+		// Add Idle, Read and Write timeouts to the server.
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
 	// The value returned from the flag.String() function is a pointer to the flag
