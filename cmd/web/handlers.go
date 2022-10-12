@@ -149,3 +149,28 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	}
 	app.render(w, http.StatusOK, "create.html", data)
 }
+
+func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintln(w, "Signup page")
+}
+
+func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintln(w, "signup request sent")
+}
+
+func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintln(w, "login page")
+}
+
+func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintln(w, "login request sent")
+}
+
+func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintln(w, "logout request sent")
+}
