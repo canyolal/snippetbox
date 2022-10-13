@@ -13,3 +13,8 @@ require (
 )
 
 require golang.org/x/crypto v0.0.0-20221012134737-56aed061732a
+
+require (
+	github.com/justinas/alice v1.2.0
+	github.com/justinas/nosurf v1.1.1
+)
