@@ -62,8 +62,12 @@ func MaxChars(value string, n int) bool {
 	return utf8.RuneCountInString(value) <= n
 }
 
-// PermittedInt() returns true if a value is in a list of permitted integers.
-func PermittedInt(value int, permittedValues ...int) bool {
+// Replace PermittedInt() with a generic PermittedValue() function. This returns
+// true if the value of type T equals one of the variadic permittedValues
+// parameters.
+
+// PermittedValue() returns true if a value is in a list of permitted values.
+func PermittedValue[T comparable](value T, permittedValues ...T) bool {
 	for i := range permittedValues {
 		if permittedValues[i] == value {
 			return true
