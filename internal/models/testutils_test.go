@@ -32,7 +32,7 @@ func newTestDB(t *testing.T) *sql.DB {
 	// has finished*. In this function we read and execute the teardown script,
 	// and close the database connection pool.
 	t.Cleanup(func() {
-		script, err = os.ReadFile("./testdata/teardown.sql")
+		script, err := os.ReadFile("./testdata/teardown.sql")
 		if err != nil {
 			t.Fatal(err)
 		}
